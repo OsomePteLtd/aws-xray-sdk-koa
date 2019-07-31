@@ -41,8 +41,5 @@
     "x ray"
   ],
   "license": "Apache-2.0",
-  "repository": "https://github.com/aws/aws-xray-sdk-node/tree/master/packages/koa",
-  "dependencies": {
-    "lerna": "^3.16.4"
-  }
+  "repository": "https://github.com/aws/aws-xray-sdk-node/tree/master/packages/koa"
 }
