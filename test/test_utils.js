@@ -1,7 +1,7 @@
-var EventEmitter = require('events');
-var util = require('util');
+const EventEmitter = require('events');
+const util = require('util');
 
-var TestUtils = {};
+const TestUtils = {};
 
 TestUtils.TestEmitter = function TestEmitter() {
   EventEmitter.call(this);
