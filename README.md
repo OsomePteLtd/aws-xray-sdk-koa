@@ -42,21 +42,11 @@ For more information about naming modes, see the aws-xray-sdk-core [README](http
 
     var AWSXRay = require('aws-xray-sdk-core');
     var xrayKoa = require('aws-xray-sdk-koa');
-    var app = express();
+    var app = koa();
 
     //...
 
     app.use(xrayKoa.openSegment('defaultName'));
-
-    app.get('/', function (req, res) {
-      var segment = AWSXRay.getSegment();
-
-      //...
-
-      res.render('index');
-    });
-
-    app.use(xrayKoa.closeSegment());
 
 ## Manual mode examples
 
@@ -70,12 +60,3 @@ For more information about naming modes, see the aws-xray-sdk-core [README](http
 
     app.use(xrayKoa.openSegment('defaultName'));               //Required at the start of your routes
 
-    app.get('/', function (req, res) {
-      var segment = req.segment;
-
-      //...
-
-      res.render('index');
-    });
-
-    app.use(xrayKoa.closeSegment());   //Required at the end of your routes / first in error handling routes
