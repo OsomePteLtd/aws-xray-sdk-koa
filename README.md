@@ -42,7 +42,7 @@ For more information about naming modes, see the aws-xray-sdk-core [README](http
 
     var AWSXRay = require('aws-xray-sdk-core');
     var xrayKoa = require('aws-xray-sdk-koa');
-    var app = koa();
+    var app = new Koa();
 
     //...
 
@@ -52,11 +52,25 @@ For more information about naming modes, see the aws-xray-sdk-core [README](http
 
     var AWSXRay = require('aws-xray-sdk-core');
     var xrayKoa = require('aws-xray-sdk-koa');
-    var app = express();
+    var app = new Koa();
 
     //...
 
     var AWSXRay = require('aws-xray-sdk');
 
     app.use(xrayKoa.openSegment('defaultName'));               //Required at the start of your routes
+    
+    router.get('/health', (ctx) => {
+        const segment = ctx.segment;
+        //Do whatever 
+       healthHandlers.performAvailableHealthCheck({ ctx }))
+    }
+    
+    server.get('/', function (req, res) {
+          var segment = req.segment;
+    
+          //...
+    
+          res.send('hello');
+        });
 

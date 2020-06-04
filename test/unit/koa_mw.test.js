@@ -78,17 +78,11 @@ describe("Koa middleware", function () {
     });
 
     describe("when handling a request", function () {
-      let addReqDataSpy,
-        newSegmentSpy,
-        onEventStub,
-        processHeadersStub,
-        resolveNameStub;
+      let addReqDataSpy, newSegmentSpy, processHeadersStub, resolveNameStub;
 
       beforeEach(function () {
         newSegmentSpy = sinon.spy(Segment.prototype, "init");
         addReqDataSpy = sinon.spy(Segment.prototype, "addIncomingRequestData");
-
-        onEventStub = sinon.stub(res, "on");
 
         processHeadersStub = sinon
           .stub(mwUtils, "processHeaders")
