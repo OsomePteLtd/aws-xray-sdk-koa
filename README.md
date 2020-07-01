@@ -7,41 +7,32 @@
 ## AWS X-Ray and Koa
 
 The AWS X-Ray Koa package automatically records information for incoming and outgoing
-requests and responses, via the middleware functions in this package.
+requests and responses, via the middleware functions in this package. To configure sampling, 
+dynamic naming, and more see the [set up section](https://github.com/aws/aws-xray-sdk-node/tree/master/packages/core#setup).
 
 The AWS X-Ray SDK Core has two modes - `manual` and `automatic`.
-Automatic mode uses the Continuation Local Storage package (CLS) and automatically
+Automatic mode uses the `cls-hooked` package and automatically
 tracks the current segment and subsegment. This is the default mode.
 Manual mode requires that you pass around the segment reference.
 
 In automatic mode, you can get the current segment/subsegment at any time:
     var segment = AWSXRay.getSegment();
 
-In manual mode, you can get the base segment off of the request object:
-    var segment = req.segment;
+In manual mode, you can get the base segment off of the context object:
+    var segment = ctx.segment;
 
-## Sampling rates on routes
+## Middleware Usage
 
-Sampling rates are determined by the `aws-xray-sdk-core` package, using the default
-sampling file that is provided, or by overriding this with a custom sampling file.
-For more information on sampling, see aws-xray-sdk-core [README](https://github.com/aws/aws-xray-sdk-node/tree/master/packages/core/README.md).
-
-## Dynamic and fixed naming modes
-
-The SDK requires that a default segment name is set when using middleware.
-If it isn't set, an error is thrown. You can override this value via the `AWS_XRAY_TRACING_NAME`
-environment variable.
-
-    app.use(xrayKoa.openSegment('defaultName'));
-
-The AWS X-Ray SDK Core defaults to a fixed naming mode. This means that each time the middleware creates a new segment for an incoming request,
-the name of that segment is set to the default name. In dynamic mode, the segment name can vary between the host header of the request or the default name.
-For more information about naming modes, see the aws-xray-sdk-core [README](https://github.com/aws/aws-xray-sdk-node/tree/master/packages/core/README.md).
+The Koa X-Ray SDK provides one middlewares: `xrayKoa.openSegment(<name>)`. 
+This middleware will wrap all of the defined routes that you'd like to trace. 
+In automatic mode, the `openSegment` middleware *must* be the last middleware added
+before defining routes, otherwise issues with the `cls-hooked`
+context may occur.
 
 ## Automatic mode examples
 
     var AWSXRay = require('aws-xray-sdk-core');
-    var xrayKoa = require('aws-xray-sdk-koa');
+    var xrayKoa = require('aws-xray-sdk-koa2');
     var app = new Koa();
 
     //...
@@ -51,7 +42,7 @@ For more information about naming modes, see the aws-xray-sdk-core [README](http
 ## Manual mode examples
 
     var AWSXRay = require('aws-xray-sdk-core');
-    var xrayKoa = require('aws-xray-sdk-koa');
+    var xrayKoa = require('aws-xray-sdk-koa2');
     var app = new Koa();
 
     //...
@@ -60,17 +51,9 @@ For more information about naming modes, see the aws-xray-sdk-core [README](http
 
     app.use(xrayKoa.openSegment('defaultName'));               //Required at the start of your routes
     
-    router.get('/health', (ctx) => {
+    router.get('/myRoute', (ctx) => {
         const segment = ctx.segment;
         //Do whatever 
-       healthHandlers.performAvailableHealthCheck({ ctx }))
     }
     
-    server.get('/', function (req, res) {
-          var segment = req.segment;
-    
-          //...
-    
-          res.send('hello');
-        });
 
