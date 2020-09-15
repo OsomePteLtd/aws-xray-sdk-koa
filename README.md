@@ -1,4 +1,9 @@
 
+## ** Obsolete **
+This package is obsolete because it has been added to the [aws-xray-sdk-node codebase](https://github.com/aws/aws-xray-sdk-node/tree/master/sdk_contrib/koa)
+
+The new package name is [aws-xray-sdk-koa2](https://www.npmjs.com/package/aws-xray-sdk-koa2)
+
 ## Requirements
 
   AWS X-Ray SDK Core (aws-xray-sdk-core)
